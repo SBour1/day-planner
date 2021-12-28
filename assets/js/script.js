@@ -40,4 +40,8 @@ setTimeout(function () {
     setInterval(timeCheck, 3600000)
 }, timeUpdate);
 
+$(".saveBtn").click(function() {
+    console.log("hello");
+})
+
 timeCheck();
