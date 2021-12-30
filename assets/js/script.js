@@ -1,36 +1,22 @@
 var date = moment();
 $("#currentDay").text(date.format("dddd, MMM Do YYYY"));
 
-var appts = {
-    "9": [],
-    "10": [],
-    "11": [],
-    "12": [],
-    "13": [],
-    "14": [],
-    "15": [],
-    "16": [],
-    "17": []
-};
-
-var setAppts = function () {
-    localStorage.setItem("appts", JSON.stringify(appts));
-}
-
 var getAppts = function () {
-    JSON.parse(localStorage.getItem("appts"));
+    for (let i = 9; i < 18; i++) {
+        $('#'+i).children('textarea').val(localStorage.getItem($('#'+i).children('div').text()));
+    }
 }
 
 var timeCheck = function () {
-    var time = moment().hour();
+    var time = moment().hour()-5;
     $(".appt-info").each(function () {
         var apptHour = parseInt($(this).attr("id"));
         if (time > apptHour) {
-            $(this).addClass("past");
+            $(this).children('textarea').addClass("past");
         } else if (time < apptHour) {
-            $(this).addClass("future");
+            $(this).children('textarea').addClass("future");
         } else {
-            $(this).addClass("present");
+            $(this).children('textarea').addClass("present");
         }
     })
 };
@@ -40,8 +26,10 @@ setTimeout(function () {
     setInterval(timeCheck, 3600000)
 }, timeUpdate);
 
-$(".saveBtn").click(function() {
-    console.log("hello");
+$(".saveBtn").click(function(event) {
+    $(event.target).siblings('textarea').val()
+    localStorage.setItem($(event.target).siblings('div').text(), $(event.target).siblings('textarea').val())
 })
 
+getAppts();
 timeCheck();
