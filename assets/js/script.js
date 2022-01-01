@@ -1,14 +1,12 @@
 var date = moment();
 $("#currentDay").text(date.format("dddd, MMM Do YYYY"));
 
-var getAppts = function () {
-    for (let i = 9; i < 18; i++) {
-        $('#'+i).children('textarea').val(localStorage.getItem($('#'+i).children('div').text()));
-    }
+for (let i = 9; i < 18; i++) {
+    $('#' + i).children('textarea').val(localStorage.getItem($('#' + i).children('div').text()));
 }
 
 var timeCheck = function () {
-    var time = moment().hour()-5;
+    var time = moment().hour();
     $(".appt-info").each(function () {
         var apptHour = parseInt($(this).attr("id"));
         if (time > apptHour) {
@@ -21,15 +19,15 @@ var timeCheck = function () {
     })
 };
 
-var timeUpdate = 3600000 - date.milliseconds();
-setTimeout(function () {
-    setInterval(timeCheck, 3600000)
-}, timeUpdate);
-
-$(".saveBtn").click(function(event) {
+$(".saveBtn").click(function (event) {
     $(event.target).siblings('textarea').val()
-    localStorage.setItem($(event.target).siblings('div').text(), $(event.target).siblings('textarea').val())
+    localStorage.setItem($(event.target).siblings('div').text(), $(event.target).siblings('textarea').val());
+    window.location.reload();
 })
 
-getAppts();
+$(".clearBtn").click(function () {
+    localStorage.clear();
+    window.location.reload();
+})
+
 timeCheck();
